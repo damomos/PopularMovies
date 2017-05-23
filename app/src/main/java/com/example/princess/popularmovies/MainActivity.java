@@ -2,13 +2,12 @@ package com.example.princess.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -32,15 +31,100 @@ public class MainActivity extends AppCompatActivity {
     boolean isConnected;
     private static SharedPreferences sharedPreferences;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
-    private final static String API_KEY = "";
+    private final static String API_KEY = BuildConfig.MY_API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        if (API_KEY.isEmpty()) {
+            Toast.makeText(getApplicationContext(), R.string.api_key_error_message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void popular(){
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<MovieResponse> call = apiService.getPopularMovies(API_KEY);
+        call.enqueue(new Callback<MovieResponse>() {
+
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                List<MovieData> movies = response.body().getResults();
+                mRecylerView.setAdapter(new MovieAdapter(movies, R.layout.movies_list_item, getApplicationContext()));
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, R.string.failure_message, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+
+    }
+
+    public void topRated(){
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<MovieResponse> call = apiService.getTopRatedMovies(API_KEY);
+        call.enqueue(new Callback<MovieResponse>() {
+
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                List<MovieData> movies = response.body().getResults();
+                mRecylerView.setAdapter(new MovieAdapter(movies, R.layout.movies_list_item, getApplicationContext()));
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, R.string.failure_message, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mRecylerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecylerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+        else{
+            mRecylerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isPopularMovie = sharedPreferences.getBoolean("popular_key", false);
+        boolean isTopratedMovie = sharedPreferences.getBoolean("toprated_key", false);
+
+        isConnected = ConnectionTest.isNetworkAvailable(this);
+        if (isConnected) {
+
+            if (isPopularMovie) {
+                popular();
+            }
+            else if (isTopratedMovie) {
+                topRated();
+            }
+            else {
+                popular();
+            }
+        }
+        else {
+
+            Toast.makeText(this, R.string.toast, Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -62,94 +146,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isPopularMovie = sharedPreferences.getBoolean("popular_key", false);
-        boolean isTopratedMovie = sharedPreferences.getBoolean("toprated_key", false);
-
-
-        if (API_KEY.isEmpty()) {
-            Toast.makeText(getApplicationContext(),
-                    "Please obtain your API KEY first from themoviedb.org",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        mRecylerView = (RecyclerView) findViewById(R.id.recyclerView);
-        LinearLayoutManager layout = new GridLayoutManager(this, 2);
-        mRecylerView.setLayoutManager(layout);
-
-        isConnected = ConnectionTest.isNetworkAvailable(this);
-        if (isConnected) {
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            if (isPopularMovie) {
-                Call<MovieResponse> call = apiService.getPopularMovies(API_KEY);
-                call.enqueue(new Callback<MovieResponse>() {
-
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        List<MovieData> movies = response.body().getResults();
-                        mRecylerView.setAdapter(new MovieAdapter(movies, R.layout.movies_list_item, getApplicationContext()));
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        //Log error here if request fails
-                        Log.e(TAG, t.toString());
-                    }
-                });
-            }
-            else if (isTopratedMovie) {
-                Call<MovieResponse> call = apiService.getTopRatedMovies(API_KEY);
-                call.enqueue(new Callback<MovieResponse>() {
-
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        List<MovieData> movies = response.body().getResults();
-                        mRecylerView.setAdapter(new MovieAdapter(movies, R.layout.movies_list_item, getApplicationContext()));
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        //Log error here if request fails
-                        Log.e(TAG, t.toString());
-                    }
-                });
-            }
-            else {
-                Call<MovieResponse> call = apiService.getPopularMovies(API_KEY);
-                call.enqueue(new Callback<MovieResponse>() {
-
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        List<MovieData> movies = response.body().getResults();
-                        mRecylerView.setAdapter(new MovieAdapter(movies, R.layout.movies_list_item, getApplicationContext()));
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        //Log error here if request fails
-                        Log.e(TAG, t.toString());
-                    }
-                });
-            }
-
-        }
-        else {
-
-            Toast.makeText(this, R.string.toast, Toast.LENGTH_LONG).show();
-
-            return;
-        }
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
 }

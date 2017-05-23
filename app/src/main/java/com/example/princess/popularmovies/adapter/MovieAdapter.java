@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
-import com.example.princess.popularmovies.MovieDetails;
+import com.example.princess.popularmovies.MovieDetailsActivity;
 import com.example.princess.popularmovies.R;
 import com.example.princess.popularmovies.models.MovieData;
 import com.squareup.picasso.Picasso;
@@ -47,11 +47,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, MovieDetails.class);
-                MovieData data = movies.get(getLayoutPosition());
-                intent.putExtra("data", data);
-                context.startActivity(intent);
+            Context context = v.getContext();
+            Intent intent = new Intent(context, MovieDetailsActivity.class);
+            MovieData data = movies.get(getLayoutPosition());
+            intent.putExtra("data", data);
+            context.startActivity(intent);
 
         }
     }
@@ -74,7 +74,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         MovieData image = movies.get(position);
         String posterPath_url = "http://image.tmdb.org/t/p/w500" + image.getPosterPath();
         // load image into imageview using picasso
-        Picasso.with(context).load(posterPath_url).into(holder.posterImage);
+        Picasso.with(context).load(posterPath_url).placeholder(R.drawable.placeholder).into(holder.posterImage);
 
     }
 

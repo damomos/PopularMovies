@@ -31,10 +31,6 @@ public class MovieData implements Parcelable{
     @Expose
     private String title;
 
-    @SerializedName("backdrop_path")
-    @Expose
-    private String backDrop;
-
     @SerializedName("vote_average")
     @Expose
     private Double rating;
@@ -47,7 +43,6 @@ public class MovieData implements Parcelable{
         date = in.readString();
         id = in.readInt();
         title = in.readString();
-        backDrop = in.readString();
         rating = in.readDouble();
     }
 
@@ -63,7 +58,6 @@ public class MovieData implements Parcelable{
         dest.writeString(date);
         dest.writeInt(id);
         dest.writeString(title);
-        dest.writeString(backDrop);
         dest.writeDouble(rating);
 
     }
@@ -89,9 +83,6 @@ public class MovieData implements Parcelable{
         return posterPath;
     }
 
-    public String getBackDrop() {
-        return backDrop;
-    }
 
     public String getOverview() {
         return overview;
@@ -120,10 +111,6 @@ public class MovieData implements Parcelable{
 
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
-    }
-
-    public void setBackDrop(String backDrop) {
-        this.backDrop = backDrop;
     }
 
     public void setId(Integer id) {

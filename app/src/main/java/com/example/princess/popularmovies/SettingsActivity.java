@@ -37,6 +37,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override
@@ -45,8 +46,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             if(popular.isChecked()){
                 toprated.setChecked(false);
             }
-        }else if (key.equals("toprated_key")){
-            if(toprated.isChecked()){
+        }
+        else if (key.equals("toprated_key")) {
+            if(toprated.isChecked()) {
                 popular.setChecked(false);
             }
         }

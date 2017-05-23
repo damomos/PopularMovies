@@ -11,7 +11,7 @@ import com.example.princess.popularmovies.models.MovieData;
 
 
 
-public class MovieDetails extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity {
 
     private Context context;
     TextView title;
@@ -26,16 +26,16 @@ public class MovieDetails extends AppCompatActivity {
         setContentView(R.layout.activity_movie_details);
 
         title = (TextView) findViewById(R.id.title);
-        image = (ImageView) findViewById(R.id.backdrop_image);
+        image = (ImageView) findViewById(R.id.poster_image_details);
         releaseDate = (TextView) findViewById(R.id.release_date);
         ratings = (TextView) findViewById(R.id.rating);
         overView = (TextView) findViewById(R.id.overview);
 
         MovieData data = getIntent().getParcelableExtra("data");
 
-        String backDrop_url = "http://image.tmdb.org/t/p/w500" + data.getBackDrop();
+        String backDrop_url = "http://image.tmdb.org/t/p/w500" + data.getPosterPath();
         // load image into imageview using picasso
-        Picasso.with(context).load(backDrop_url).into(image);
+        Picasso.with(context).load(backDrop_url).placeholder(R.drawable.placeholder).into(image);
         title.setText(data.getTitle());
         releaseDate.setText(data.getDate());
         ratings.setText(data.getRating().toString());

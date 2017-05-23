@@ -9,5 +9,7 @@
     <string name="top_summary">This will arrange the list in order of top rated to the least rated</string>
 
     <string name="toast">Please check your connection and try again</string>
+    <string name="failure_message">Something went wrong, please check your internet connection and try again</string>
+    <string name="api_key_error_message">Please obtain your API KEY first from themoviedb.org</string>
 
 </resources>
