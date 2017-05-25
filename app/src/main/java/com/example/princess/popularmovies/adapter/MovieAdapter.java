@@ -59,7 +59,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.movies = movies;
         this.rowLayout = rowLayout;
         this.context = context;
-
     }
 
     @Override
@@ -72,12 +71,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieData image = movies.get(position);
-        String posterPath_url = "http://image.tmdb.org/t/p/w500" + image.getPosterPath();
+        String posterPath_url = "http://image.tmdb.org/t/p/w185" + image.getPosterPath();
         // load image into imageview using picasso
         Picasso.with(context).load(posterPath_url).placeholder(R.drawable.placeholder).into(holder.posterImage);
 
     }
-
 
     // return total item from List
     @Override
@@ -86,5 +84,4 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             return 0;
         return movies.size();
     }
-
 }

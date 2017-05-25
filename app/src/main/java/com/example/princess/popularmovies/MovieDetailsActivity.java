@@ -9,33 +9,31 @@ import com.squareup.picasso.Picasso;
 
 import com.example.princess.popularmovies.models.MovieData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
     private Context context;
-    TextView title;
-    ImageView image;
-    TextView releaseDate;
-    TextView ratings;
-    TextView overView;
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.poster_image_details) ImageView image;
+    @BindView(R.id.release_date) TextView releaseDate;
+    @BindView(R.id.rating) TextView ratings;
+    @BindView(R.id.overview) TextView overView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
-        title = (TextView) findViewById(R.id.title);
-        image = (ImageView) findViewById(R.id.poster_image_details);
-        releaseDate = (TextView) findViewById(R.id.release_date);
-        ratings = (TextView) findViewById(R.id.rating);
-        overView = (TextView) findViewById(R.id.overview);
+        ButterKnife.bind(this);
 
         MovieData data = getIntent().getParcelableExtra("data");
 
-        String backDrop_url = "http://image.tmdb.org/t/p/w500" + data.getPosterPath();
+        String posterPath_url = "http://image.tmdb.org/t/p/w185" + data.getPosterPath();
         // load image into imageview using picasso
-        Picasso.with(context).load(backDrop_url).placeholder(R.drawable.placeholder).into(image);
+        Picasso.with(context).load(posterPath_url).placeholder(R.drawable.placeholder).into(image);
         title.setText(data.getTitle());
         releaseDate.setText(data.getDate());
         ratings.setText(data.getRating().toString());
@@ -46,9 +44,5 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
-
-
 }

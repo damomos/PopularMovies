@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/pixel7"
-            android:background="@color/colorTitle">
+            android:background="@color/title_color">
 
             <TextView
                 android:id="@+id/title"
@@ -28,7 +28,7 @@
                 android:paddingRight="@dimen/pixel2"
                 android:textSize="@dimen/title_text"
                 android:textStyle="bold"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/title_text_color"/>
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +59,7 @@
                     android:id="@+id/release_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/date_text_color"
                     android:textSize="@dimen/date_text" />
 
                 <LinearLayout
@@ -80,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/rating_text"
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/rating_text_color"/>
 
                 </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:id="@+id/overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGrey"
+                android:textColor="@color/overview_text_color"
                 android:textSize="@dimen/overview"/>
         </FrameLayout>
 

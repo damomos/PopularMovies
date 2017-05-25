@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isConnected;
     private static SharedPreferences sharedPreferences;
 
+
     private final static String API_KEY = BuildConfig.MY_API_KEY;
 
     @Override
@@ -38,10 +39,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         if (API_KEY.isEmpty()) {
             Toast.makeText(getApplicationContext(), R.string.api_key_error_message, Toast.LENGTH_LONG).show();
         }
+
+        mRecylerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecylerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+        else{
+            mRecylerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
+
     }
 
     public void popular(){
@@ -84,19 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    @Override
     protected void onResume() {
         super.onResume();
-
-        mRecylerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            mRecylerView.setLayoutManager(new GridLayoutManager(this, 2));
-        }
-        else{
-            mRecylerView.setLayoutManager(new GridLayoutManager(this, 4));
-        }
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isPopularMovie = sharedPreferences.getBoolean("popular_key", false);
@@ -104,16 +103,13 @@ public class MainActivity extends AppCompatActivity {
 
         isConnected = ConnectionTest.isNetworkAvailable(this);
         if (isConnected) {
-
             if (isPopularMovie) {
                 popular();
-            }
-            else if (isTopratedMovie) {
+            } else if (isTopratedMovie) {
                 topRated();
             }
-            else {
+            else
                 popular();
-            }
         }
         else {
 
@@ -125,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
