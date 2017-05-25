@@ -33,7 +33,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         String posterPath_url = "http://image.tmdb.org/t/p/w185" + data.getPosterPath();
         // load image into imageview using picasso
-        Picasso.with(context).load(posterPath_url).placeholder(R.drawable.placeholder).into(image);
+        Picasso.with(context).load(posterPath_url).placeholder(R.mipmap.placeholder).into(image);
         title.setText(data.getTitle());
         releaseDate.setText(data.getDate());
         ratings.setText(data.getRating().toString());

@@ -73,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         MovieData image = movies.get(position);
         String posterPath_url = "http://image.tmdb.org/t/p/w185" + image.getPosterPath();
         // load image into imageview using picasso
-        Picasso.with(context).load(posterPath_url).placeholder(R.drawable.placeholder).into(holder.posterImage);
+        Picasso.with(context).load(posterPath_url).placeholder(R.mipmap.placeholder).into(holder.posterImage);
 
     }
 
